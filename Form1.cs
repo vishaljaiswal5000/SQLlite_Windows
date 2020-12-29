@@ -26,11 +26,19 @@ namespace SQLlite_Windows
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            UniversityModel data = SetFields();
-            SqliteDataAccess.SaveUniversity(data);
+            if (!String.IsNullOrEmpty(txtProjectCode.Text))
+            {
 
-            MessageBox.Show("Record saved successfully.");
-            button1_Click(sender, e);
+                UniversityModel data = SetFields();
+                SqliteDataAccess.SaveUniversity(data);
+
+                MessageBox.Show("Record saved successfully.");
+                button1_Click(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("enter project code");
+            }
 
         }
 
@@ -99,6 +107,8 @@ namespace SQLlite_Windows
             txtThirdPaymentAmount.Text = "";
             txtThirdPaymentDate.Text = "";
             btnDelete.Visible = false;
+            txtIpProjectCode.Text = "";
+            getAll();
 
         }
 
@@ -158,6 +168,21 @@ namespace SQLlite_Windows
                 SqliteDataAccess.DeleteUniversity(GProject_Code);
                 button1_Click(sender, e);
             }
+        }
+
+        public void getAll()
+        {
+            List<UniversityModel> lst = SqliteDataAccess.LoadUniversity();
+            if (lst != null && lst.Count > 0)
+            {
+
+                dataGridView1.Visible = true;
+            }
+            else
+            {
+                dataGridView1.Visible = true;
+            }
+            dataGridView1.DataSource = lst;
         }
     }
 }
